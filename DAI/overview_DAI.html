@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>per arianna — ricordo</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../contenuti.js"></script>
+</head>
+<body data-memory-id="tutti-i-ricordi" class="page-overview page-overview-dai">
+  <canvas id="draw-canvas" aria-hidden="true"></canvas>
+
+  <div class="page page--overview">
+    <div class="overview-images-layer" id="overview-images" aria-hidden="true"></div>
+
+    <aside class="col-left">
+      <div class="col-header col-left-header">
+        <a href="../index.html" class="logo">per arianna</a>
+      </div>
+
+      <div class="col-left-body">
+        <h1 class="route-title sub-title">[Titolo del ricordo]</h1>
+        <p class="route-intro">[Descrizione del ricordo]</p>
+        <div class="route-meta">
+          <p><span class="location">Per.</span> <span data-memory-name>Arianna</span></p>
+          <p><span class="location">Da.</span> <span data-memory-signature>[La tua firma]</span></p>
+        </div>
+
+        <p class="conversations-heading sub-title">un augurio</p>
+        <p class="conversations-desc">[Scrivi qui un pensiero o un augurio]</p>
+        <ul class="conversations-list">
+          <li class="conversations-item">
+            <a href="../routes.html" class="conversations-marker" aria-label="Tutti i ricordi"></a>
+            <a href="../routes.html" class="link-dotted">tutti i ricordi</a>
+            <p class="conversations-desc">[Scrivi qui un pensiero o un augurio]</p>
+          </li>
+          <li class="conversations-item">
+            <a href="../about.html" class="conversations-marker" aria-label="Gli auguri per Arianna"></a>
+            <a href="../about.html" class="link-dotted">gli auguri</a>
+            <p class="conversations-desc">[Scrivi qui un pensiero o un augurio]</p>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <div class="overview-main">
+      <nav class="col-header top-nav overview-top-nav">
+        <a href="../about.html" class="link-dotted">auguri</a>
+        <a href="../routes.html" class="link-dotted">ricordi</a>
+      </nav>
+    </div>
+
+    <div class="page-arrows">
+      <a href="../UMPRUM/overview_UMPRUM.html" class="nav-arrow page-arrows__left" aria-label="Ricordo precedente">←</a>
+      <a href="../Rietveld/overview_Rietveld.html" class="nav-arrow page-arrows__right" aria-label="Ricordo successivo">→</a>
+    </div>
+  </div>
+
+  <script src="../js/content.js"></script>
+  <script src="../js/cursor-draw.js?v=20260306f"></script>
+  <script src="../js/navigation.js"></script>
+  <script src="../js/overview-images.js"></script>
+  <script src="../js/overview-click.js"></script>
+  <script src="../js/routes.js"></script>
+  <script src="../js/music.js"></script>
+</body>
+</html>
