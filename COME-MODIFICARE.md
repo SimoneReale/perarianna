@@ -81,8 +81,30 @@ Se ometti `posizione`, il sito ne sceglie una automaticamente. I cinque puntini 
 
 Metti il file nella cartella `mp3` e aggiorna `musica.file`.
 `musica.volume` va da `0` (silenzio) a `1` (volume massimo).
-La riproduzione parte al primo click o tocco dentro il sito e continua passando tra le pagine.
+Il sito prova ad avviare la canzone al primo hover su un puntino nero.
+Se il browser richiede un’interazione per consentire l’audio, la canzone parte al primo click o tocco dentro il sito.
+La riproduzione continua passando tra le pagine.
 Il comando “suono” permette di metterla in pausa e riprenderla.
+
+## Regolare il moto dei puntini
+
+In `contenuti.js`, la sezione `movimento` controlla il moto browniano semplificato:
+
+```js
+movimento: {
+  diffusione: 40,
+  attrito: 1.2,
+},
+```
+
+`diffusione` aumenta o riduce l’intensità del movimento casuale; `0` elimina il movimento spontaneo.
+`attrito` regola la persistenza della direzione: un valore più basso dà traiettorie più lunghe e morbide; un valore più alto fa cambiare direzione più spesso.
+I valori iniziali mantengono il movimento discreto. La home desktop conserva il suo ulteriore rallentamento.
+
+Il modello usa impulsi gaussiani e attrito sulla velocità: `dv = -γ v dt + γ √(2D) dW`, `dx = v dt`, separatamente sui due assi.
+La simulazione procede a intervalli fissi, indipendentemente dalla frequenza dello schermo.
+I puntini restano entro i bordi, reagiscono al cursore e al tocco e si fermano quando esplori un’anteprima.
+La preferenza di sistema per il movimento ridotto continua a fermare l’animazione.
 
 ## Vedere le modifiche
 

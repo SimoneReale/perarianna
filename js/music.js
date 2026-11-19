@@ -44,17 +44,27 @@
     console.warn("Audio per Arianna:", error?.message || audio.error?.message || "Riproduzione non disponibile");
   }
 
-  function play() {
+  function play({ fromHover = false } = {}) {
     wantsPlayback = true;
-    if (pending || !audio.paused) return;
+    // A real click can retry immediately, even if a hover attempt is pending.
+    if ((pending && (!pending.fromHover || fromHover)) || !audio.paused) return;
     if (audio.error) audio.load();
     audio.muted = false;
     toggle.textContent = "suono…";
     toggle.removeAttribute("title");
     // No await, timer or fetch before play(): keep the original user gesture.
-    const attempt = audio.play();
+    const attempt = { fromHover, promise: audio.play() };
     pending = attempt;
-    attempt.catch((error) => {
+    attempt.promise.catch((error) => {
+      if (pending !== attempt) return;
+      if (fromHover && error.name === "NotAllowedError") {
+        // Hover does not grant user activation in browsers that block autoplay.
+        // Keep the first-click handlers available without displaying an error.
+        wantsPlayback = false;
+        toggle.textContent = "suono";
+        toggle.setAttribute("aria-label", "Ascolta la canzone per Arianna");
+        return;
+      }
       if (wantsPlayback) showError(error);
     }).finally(() => {
       if (pending === attempt) pending = null;
@@ -67,6 +77,13 @@
     play();
   }
 
+  function onFirstHover(event) {
+    if (unlocked || event.pointerType === "touch") return;
+    if (!event.target.closest(".dot--solid.dot--trigger")) return;
+    document.removeEventListener("pointerover", onFirstHover, true);
+    play({ fromHover: true });
+  }
+
   toggle.addEventListener("click", () => {
     if (!audio.paused && wantsPlayback) {
       wantsPlayback = false;
@@ -77,6 +94,7 @@
   audio.addEventListener("playing", () => {
     unlocked = true;
     gestureEvents.forEach((type) => document.removeEventListener(type, onGesture, true));
+    document.removeEventListener("pointerover", onFirstHover, true);
     syncToggle();
   });
   audio.addEventListener("pause", syncToggle);
@@ -85,4 +103,6 @@
   });
   // Capture works even when a photo preview stops event propagation.
   gestureEvents.forEach((type) => document.addEventListener(type, onGesture, true));
+  // Delegation also covers the dots rebuilt when returning to the home page.
+  document.addEventListener("pointerover", onFirstHover, true);
 })();

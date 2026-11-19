@@ -8,21 +8,45 @@
   const triggerDots = document.querySelectorAll(".dot--trigger");
   const captions = document.querySelectorAll(".dot-caption");
 
-  const dotsState = Array.from(dots, (el) => ({
-    el,
-    x: parseFloat(el.style.left),
-    y: parseFloat(el.style.top),
-    vx: (Math.random() - 0.5) * 0.012,
-    vy: (Math.random() - 0.5) * 0.012,
-    phase: Math.random() * Math.PI * 2,
-    paused: false,
-    isHollow: el.classList.contains("dot--hollow"),
-  }));
+  const motion = window.ARIANNA?.movimento || {};
+  const diffusion = Number.isFinite(motion.diffusione) ? Math.max(0, motion.diffusione) : 40;
+  const friction = Number.isFinite(motion.attrito) ? Math.max(0.01, motion.attrito) : 1.2;
+  const timeStep = 1 / 60;
+
+  // Simplified Langevin model, independently on x and y:
+  // dv = -γ v dt + γ √(2D) dW; dx = v dt.
+  // The exact velocity update has Gaussian noise with this variance.
+  const decay = Math.exp(-friction * timeStep);
+  const noise = Math.sqrt(diffusion * friction * (1 - decay * decay));
+  const initialSpeed = Math.sqrt(diffusion * friction);
+
+  function gaussianPair() {
+    // Box–Muller: two independent N(0, 1) samples, without log(0).
+    const radius = Math.sqrt(-2 * Math.log(1 - Math.random()));
+    const angle = 2 * Math.PI * Math.random();
+    return [radius * Math.cos(angle), radius * Math.sin(angle)];
+  }
+
+  const dotsState = Array.from(dots, (el) => {
+    const [gx, gy] = gaussianPair();
+    return {
+      el,
+      x: parseFloat(el.style.left),
+      y: parseFloat(el.style.top),
+      // Velocities use pixels/second so the noise is isotropic on any screen.
+      vx: gx * initialSpeed,
+      vy: gy * initialSpeed,
+      paused: false,
+      isHollow: el.classList.contains("dot--hollow"),
+    };
+  });
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const fleeRadiusPx = 110;
   const touchFleeRadiusPx = 150;
   const touchFleePush = 1.55;
+  const fleeAcceleration = 900;
+  const touchImpulse = 20;
   let mouseX = -10000;
   let mouseY = -10000;
   let frameId = null;
@@ -106,9 +130,8 @@
   window.addEventListener("touchcancel", onTouchEnd, { passive: true, capture: true });
 
   function applyFleeForceAt(dot, px, py, radius, pushScale) {
-    const rect = dot.el.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
+    const { width, height } = getCanvasSize();
+    const { x: cx, y: cy } = dotCenterPx(dot, width, height);
     const dx = cx - px;
     const dy = cy - py;
     const dist = Math.hypot(dx, dy);
@@ -116,7 +139,7 @@
     if (dist >= radius || dist < 1) return false;
 
     const urgency = 1 - dist / radius;
-    const push = urgency * urgency * 0.028 * pushScale;
+    const push = urgency * urgency * fleeAcceleration * pushScale * timeStep;
     dot.vx += (dx / dist) * push;
     dot.vy += (dy / dist) * push;
     return true;
@@ -164,7 +187,7 @@
         if (dist >= radius || dist < 1) continue;
 
         const urgency = 1 - dist / radius;
-        const push = urgency * urgency * 0.028 * pushScale;
+        const push = urgency * urgency * touchImpulse * pushScale / (steps + 1);
         h.dot.vx += (dx / dist) * push;
         h.dot.vy += (dy / dist) * push;
       }
@@ -348,9 +371,9 @@
     window.matchMedia("(hover: hover) and (pointer: fine)").matches
       ? 0.4
     : 1;
-  const maxSpeed = 0.024;
-  const hollowFleeSpeed = 0.13;
-  const touchHollowFleeSpeed = 0.22;
+  const maxSpeed = 24;
+  const hollowFleeSpeed = 120;
+  const touchHollowFleeSpeed = 90;
   const dotRadiusPx = 6;
   const dotGapPx = 2;
   const collisionRestitution = 0.9;
@@ -472,28 +495,20 @@
     window.removeEventListener("touchend", onTouchEnd, true);
     window.removeEventListener("touchcancel", onTouchEnd, true);
     document.removeEventListener("click", onDocumentClick);
+    document.removeEventListener("visibilitychange", resetClock);
     closeAllTriggers();
   };
 
   if (reduceMotion) return;
 
-  function tick() {
-    const { width, height } = getCanvasSize();
-
+  function advanceMotion(width, height) {
     for (const dot of dotsState) {
       if (dot.paused) continue;
 
-      let fleeing = false;
-
-      if (dot.isHollow) {
-        fleeing = applyFleeForce(dot);
-      }
-
-      if (!fleeing) {
-        dot.phase += 0.004 + Math.random() * 0.002;
-        dot.vx += Math.sin(dot.phase) * 0.00008;
-        dot.vy += Math.cos(dot.phase * 1.3) * 0.00008;
-      }
+      const [gx, gy] = gaussianPair();
+      dot.vx = decay * dot.vx + noise * gx;
+      dot.vy = decay * dot.vy + noise * gy;
+      const fleeing = dot.isHollow && applyFleeForce(dot);
 
       const speedCap =
         dot.isHollow && fleeing
@@ -507,13 +522,8 @@
         dot.vy = (dot.vy / speed) * speedCap;
       }
 
-      if (dot.isHollow && fleeing) {
-        dot.vx *= 0.985;
-        dot.vy *= 0.985;
-      }
-
-      dot.x += dot.vx * desktopMotionScale;
-      dot.y += dot.vy * desktopMotionScale;
+      dot.x += dot.vx * timeStep * desktopMotionScale / width * 100;
+      dot.y += dot.vy * timeStep * desktopMotionScale / height * 100;
 
       if (dot.x < 1 || dot.x > 99) dot.vx *= -1;
       if (dot.y < 1 || dot.y > 99) dot.vy *= -1;
@@ -523,6 +533,31 @@
     }
 
     resolveDotCollisions(width, height);
+  }
+
+  let previousTime = null;
+  let accumulator = 0;
+
+  function resetClock() {
+    previousTime = null;
+    accumulator = 0;
+  }
+
+  document.addEventListener("visibilitychange", resetClock);
+
+  function tick(now) {
+    const { width, height } = getCanvasSize();
+    if (previousTime !== null) {
+      // Fixed simulation steps keep the same motion at 30, 60 or 120 Hz.
+      // Cap elapsed time so a suspended tab cannot produce a large jump.
+      accumulator += Math.min(0.1, Math.max(0, (now - previousTime) / 1000));
+    }
+    previousTime = now;
+
+    while (accumulator + 1e-9 >= timeStep) {
+      advanceMotion(width, height);
+      accumulator = Math.max(0, accumulator - timeStep);
+    }
 
     for (const dot of dotsState) {
       dot.x = Math.max(1, Math.min(99, dot.x));

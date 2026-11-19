@@ -13,6 +13,11 @@ window.ARIANNA = {
     volume: 0.8, // Da 0 a 1.
   },
 
+  movimento: {
+    diffusione: 40, // Intensità del moto browniano, in pixel²/secondo.
+    attrito: 1.2, // Quanto rapidamente si perde l’inerzia, in 1/secondo.
+  },
+
   auguri: {
     titolo: "[Titolo degli auguri]",
     introduzione: "[Scrivi qui una breve introduzione]",
