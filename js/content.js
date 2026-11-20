@@ -54,41 +54,47 @@
   }
 
   function renderHome() {
-    const canvas = document.querySelector(".page-home .canvas");
+    const canvas = document.querySelector(".page-home .solar-bodies");
     if (!canvas) return;
-    canvas.querySelectorAll(".dot--trigger, .dot-captions").forEach((node) => node.remove());
-    const captions = document.createElement("div");
-    captions.className = "dot-captions";
-    captions.setAttribute("aria-hidden", "true");
+    canvas.replaceChildren();
+    const sun = memories.find((memory) => memory.foto === "tutte") || memories[0];
+    const colors = ["blue", "yellow", "orange", "purple", "green", "pink"];
+    let planetIndex = 0;
 
     memories.forEach((memory, index) => {
+      const isSun = memory === sun;
       const dot = document.createElement("a");
-      dot.className = "dot dot--solid dot--trigger";
+      dot.className = `dot dot--solid dot--trigger solar-body ${isSun ? "solar-sun" : "solar-planet"}`;
       dot.href = memoryUrl(memory);
       dot.dataset.href = dot.href;
-      dot.dataset.caption = String(index);
       dot.setAttribute("aria-label", memory.titolo || `Ricordo ${index + 1}`);
-      const position = memory.posizione || [15 + (index * 23) % 70, 25 + (index * 17) % 55];
-      dot.style.left = `${Math.max(5, Math.min(95, position[0]))}%`;
-      dot.style.top = `${Math.max(15, Math.min(85, position[1]))}%`;
+      const art = document.createElement("img");
+      art.className = "solar-body-art";
+      art.alt = "";
+      art.draggable = false;
+      art.src = siteUrl(isSun ? "assets/solar/stellina.svg" : `assets/solar/planet-${colors[planetIndex % colors.length]}.svg`);
+      if (!isSun) dot.dataset.planet = String(planetIndex++);
+      dot.appendChild(art);
 
+      const preview = document.createElement("span");
+      preview.className = "solar-preview";
       const photo = photosFor(memory)[0];
       if (photo) {
         const image = document.createElement("img");
         image.className = "dot-preview";
         image.src = siteUrl(photo.file);
         image.alt = photo.alt || "";
-        dot.appendChild(image);
+        image.draggable = false;
+        preview.appendChild(image);
       }
 
-      const caption = document.createElement("p");
-      caption.className = "dot-caption";
+      const caption = document.createElement("span");
+      caption.className = "solar-caption";
       text(caption, [memory.titolo, memory.descrizione].filter(Boolean).join("\n"));
-      caption.hidden = true;
-      captions.appendChild(caption);
+      preview.appendChild(caption);
+      dot.appendChild(preview);
       canvas.appendChild(dot);
     });
-    canvas.appendChild(captions);
   }
 
   function renderRoutes() {

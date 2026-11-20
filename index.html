@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>per arianna — buon compleanno</title>
   <meta name="description" content="per arianna">
+  <link rel="icon" href="assets/solar/stellina.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
   <script src="contenuti.js"></script>
 </head>
@@ -30,38 +31,20 @@
   </div>
 
   <div class="page-content" id="page-content">
-    <main class="canvas" aria-label="I ricordi per Arianna">
-      <!-- Puntini e descrizioni generati da contenuti.js. -->
-
-      <!-- hollow dots -->
-      <span class="dot dot--hollow" style="left: 42%; top: 8%;"></span>
-      <span class="dot dot--hollow" style="left: 97%; top: 12%;"></span>
-      <span class="dot dot--hollow" style="left: 7%; top: 26%;"></span>
-      <span class="dot dot--hollow" style="left: 18%; top: 16%;"></span>
-      <span class="dot dot--hollow" style="left: 25%; top: 23%;"></span>
-      <span class="dot dot--hollow" style="left: 19%; top: 46%;"></span>
-      <span class="dot dot--hollow" style="left: 9%; top: 65%;"></span>
-      <span class="dot dot--hollow" style="left: 14%; top: 84%;"></span>
-      <span class="dot dot--hollow" style="left: 48%; top: 23%;"></span>
-      <span class="dot dot--hollow" style="left: 37%; top: 62%;"></span>
-      <span class="dot dot--hollow" style="left: 39%; top: 87%;"></span>
-      <span class="dot dot--hollow" style="left: 70%; top: 19%;"></span>
-      <span class="dot dot--hollow" style="left: 65%; top: 57%;"></span>
-      <span class="dot dot--hollow" style="left: 57%; top: 76%;"></span>
-      <span class="dot dot--hollow" style="left: 68%; top: 82%;"></span>
-      <span class="dot dot--hollow" style="left: 88%; top: 21%;"></span>
-      <span class="dot dot--hollow" style="left: 85%; top: 47%;"></span>
-      <span class="dot dot--hollow" style="left: 84%; top: 70%;"></span>
-      <span class="dot dot--hollow" style="left: 92%; top: 68%;"></span>
-      <span class="dot dot--hollow" style="left: 90%; top: 89%;"></span>
+    <main class="canvas solar-canvas" aria-label="Un piccolo universo di ricordi per Arianna">
+      <div class="solar-stars" aria-hidden="true"></div>
+      <div class="solar-system">
+        <img class="solar-orbits" src="assets/solar/orbits.svg" alt="" aria-hidden="true">
+        <div class="solar-bodies"><!-- Stella e pianeti generati da contenuti.js. --></div>
+      </div>
     </main>
   </div>
 
   <script src="js/content.js"></script>
-  <script src="js/cursor-draw.js?v=20260306f"></script>
+  <script src="js/cursor-draw.js?v=20261120-solar"></script>
   <script src="js/overview-images.js"></script>
   <script src="js/navigation.js"></script>
-  <script src="js/dots.js?v=20261119-brownian"></script>
+  <script src="js/solar-system.js"></script>
   <script src="js/routes.js"></script>
   <script src="js/music.js"></script>
 </body>

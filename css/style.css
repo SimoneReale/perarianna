@@ -1788,3 +1788,177 @@ body.page-routes {
     );
   }
 }
+
+/* A little solar system, drawn on warm paper. */
+body.page-home {
+  --bg: #fff5e8;
+  --text: #493f47;
+  overflow: hidden;
+}
+
+.page-home::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("../assets/solar/paper.svg") repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-home .solar-canvas {
+  overflow: hidden;
+}
+
+.solar-system {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: min(90vw, 117dvh, 1200px);
+  aspect-ratio: 10 / 7;
+  transform: translate(-50%, -50%);
+}
+
+.solar-orbits,
+.solar-bodies,
+.solar-stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.solar-orbits { user-select: none; }
+
+.page-home .solar-body {
+  left: 50%;
+  top: 50%;
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: none;
+  will-change: left, top;
+  outline-offset: 8px;
+  outline-color: #b19acb;
+}
+
+.solar-body::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+}
+
+.solar-sun { width: 23%; min-width: 106px; }
+.solar-planet { width: 7.3%; min-width: 38px; }
+.solar-planet[data-planet="0"] { width: 6%; }
+.solar-planet[data-planet="1"] { width: 6.8%; }
+.solar-planet[data-planet="2"] { width: 8.6%; }
+
+.solar-body-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+.solar-sun .solar-body-art {
+  animation: solar-sun-sway 14s ease-in-out infinite;
+}
+
+.is-exploring .solar-body-art { animation-play-state: paused; }
+.solar-body.is-open { z-index: 6; }
+.solar-body.is-open .solar-body-art { opacity: .25; }
+
+.solar-preview {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(240px, 70vw);
+  padding: 8px;
+  background: #fffcf6;
+  box-shadow: 0 5px 25px #6b4c6521;
+  transform: translate(-50%, -50%);
+  display: none;
+  pointer-events: none;
+  cursor: pointer;
+}
+
+.solar-body.is-open .solar-preview {
+  display: block;
+  pointer-events: auto;
+}
+
+.page-home .solar-body .dot-preview {
+  position: static;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: 37dvh;
+  object-fit: contain;
+  transform: none;
+  pointer-events: auto;
+}
+
+.solar-caption {
+  display: block;
+  padding: 8px 3px 3px;
+  font-size: 14px;
+  line-height: 1.25;
+  color: #493f47;
+}
+
+.solar-caption[hidden] { display: none; }
+
+.solar-spark {
+  position: absolute;
+  height: auto;
+  transform: translate(-50%, -50%);
+  opacity: .85;
+  user-select: none;
+  pointer-events: none;
+}
+
+.solar-hint {
+  position: absolute;
+  bottom: max(64px, 8dvh);
+  left: 16px;
+  right: 16px;
+  margin: 0;
+  text-align: center;
+  font-size: 16px;
+  color: #897a89;
+}
+
+.solar-hint__touch { display: none; }
+.page-home .music-toggle { background-color: transparent; }
+
+@keyframes solar-sun-sway {
+  0%, 100% { transform: rotate(-6deg); }
+  50% { transform: rotate(5deg); }
+}
+
+@media (hover: none) {
+  .solar-hint__desktop { display: none; }
+  .solar-hint__touch { display: inline; }
+}
+
+@media (max-width: 600px) {
+  .solar-system { width: 100vw; top: 49%; }
+  .solar-spark { max-width: 28px; }
+  .solar-hint { bottom: 15dvh; font-size: 15px; }
+}
+
+@media (max-height: 500px) and (min-width: 601px) {
+  .solar-system { width: 105dvh; top: 54%; }
+  .solar-hint { bottom: 30px; font-size: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .solar-sun .solar-body-art { animation: none; }
+  .solar-body-art { transition: none; }
+}

@@ -127,6 +127,10 @@
   }
 
   function cleanupPage() {
+    if (typeof window.__wwSolarCleanup === "function") {
+      window.__wwSolarCleanup();
+      window.__wwSolarCleanup = null;
+    }
     if (typeof window.__wwDotsCleanup === "function") {
       window.__wwDotsCleanup();
       window.__wwDotsCleanup = null;
@@ -155,7 +159,10 @@
     const prefix = `${jsPrefix(pageUrl)}js/`;
     const scripts = [];
 
-    if (body.classList.contains("page-home") || body.classList.contains("page-about")) {
+    if (body.classList.contains("page-home")) {
+      scripts.push(`${prefix}solar-system.js`);
+    }
+    if (body.classList.contains("page-about")) {
       scripts.push(`${prefix}dots.js`);
     }
     if (body.classList.contains("page-overview")) {

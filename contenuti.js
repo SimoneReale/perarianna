@@ -13,6 +13,7 @@ window.ARIANNA = {
     volume: 0.8, // Da 0 a 1.
   },
 
+  // Particelle nella pagina “auguri”; la home usa js/solar-system.js.
   movimento: {
     diffusione: 40, // Intensità del moto browniano, in pixel²/secondo.
     attrito: 1.2, // Quanto rapidamente si perde l’inerzia, in 1/secondo.
@@ -40,7 +41,7 @@ window.ARIANNA = {
       titolo: "[Titolo del ricordo 1]",
       descrizione: "[Scrivi qui la descrizione del primo ricordo]",
       augurio: "[Scrivi qui un pensiero o un augurio]",
-      posizione: [22.4, 55.2], // Posizione del puntino, in percentuale. Facoltativa.
+      posizione: [22.4, 55.2], // Posizione della versione precedente; non usata dalle orbite.
       foto: [
         {
           file: "foto/photo_6051028249535516617_w.jpg",
@@ -100,7 +101,7 @@ window.ARIANNA = {
       posizione: [76.1, 35.1],
       foto: "tutte", // Raccoglie automaticamente anche le foto che aggiungerai.
     },
-    // Per creare un nuovo puntino e una nuova pagina, copia un intero ricordo
+    // Per creare un nuovo pianeta e una nuova pagina, copia un intero ricordo
     // qui sopra e cambia il suo id. Non occorre creare altri file HTML.
   ],
 };

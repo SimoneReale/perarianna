@@ -92,12 +92,15 @@
     pruneStrokes(now);
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     ctx.lineWidth = config.lineWidth;
+    const isHome = document.body.classList.contains("page-home");
 
     for (let i = 0; i < strokes.length; i++) {
       const s = strokes[i];
       const a = strokeAlpha(now - s.t);
       if (a <= 0) continue;
-      ctx.strokeStyle = `rgba(0, 0, 0, ${a})`;
+      ctx.strokeStyle = isHome
+        ? `rgba(177, 154, 203, ${a * 0.7})`
+        : `rgba(0, 0, 0, ${a})`;
       ctx.beginPath();
       ctx.moveTo(s.x1, s.y1);
       ctx.lineTo(s.x2, s.y2);

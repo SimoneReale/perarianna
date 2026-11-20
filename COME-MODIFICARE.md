@@ -10,7 +10,7 @@ Sostituisci i placeholder tra parentesi quadre mantenendo le virgolette.
 
 - `auguri`: testi della pagina “auguri”. Ogni voce di `paragrafi` è un paragrafo separato; puoi aggiungerne o toglierne.
 - `firma`: la tua firma, mostrata nelle pagine dei ricordi.
-- `ricordi`: i contenuti dei puntini della home e dell’elenco “ricordi”.
+- `ricordi`: i contenuti dei pianeti della home e dell’elenco “ricordi”.
 - `titolo`: titolo di un ricordo.
 - `descrizione`: testo nell’anteprima, nell’elenco e nella pagina del ricordo.
 - `augurio`: il pensiero aggiuntivo nella pagina del ricordo.
@@ -47,10 +47,10 @@ foto: [
 ],
 ```
 
-La prima foto diventa anche l’anteprima del puntino. Le altre compaiono nella stessa galleria.
+La prima foto diventa anche l’anteprima del pianeta. Le altre compaiono nella stessa galleria.
 Il ricordo con `foto: "tutte"` raccoglie automaticamente le foto di tutti gli altri ricordi, senza duplicati.
 
-## Aggiungere un nuovo puntino con la sua pagina
+## Aggiungere un nuovo pianeta con la sua pagina
 
 Aggiungi questo blocco nella lista `ricordi`, prima della parentesi quadra di chiusura, e personalizzalo:
 
@@ -71,40 +71,29 @@ Aggiungi questo blocco nella lista `ricordi`, prima della parentesi quadra di ch
 ```
 
 L’`id` deve essere unico: usa lettere minuscole, numeri e trattini.
-Puntino, voce nell’elenco, pagina e frecce di navigazione si aggiornano automaticamente.
+Pianeta, voce nell’elenco, pagina e frecce di navigazione si aggiornano automaticamente.
 La pagina condivisa è `ricordo.html?id=un-nuovo-ricordo`.
 
-Puoi aggiungere `posizione: [30, 60]` per decidere dove appare il puntino: prima la distanza da sinistra, poi dall’alto, in percentuale.
-Se ometti `posizione`, il sito ne sceglie una automaticamente. I cinque puntini iniziali mantengono le posizioni precedenti.
+La home dispone automaticamente i pianeti sulle tre orbite. Il ricordo con `foto: "tutte"` diventa la stella rossa al centro; se non c’è una raccolta, viene usato il primo ricordo. Gli altri ricordi diventano pianeti colorati. Il campo `posizione` non viene usato dal sistema solare.
 
 ## Cambiare canzone
 
 Metti il file nella cartella `mp3` e aggiorna `musica.file`.
 `musica.volume` va da `0` (silenzio) a `1` (volume massimo).
-Il sito prova ad avviare la canzone al primo hover su un puntino nero.
+Il sito prova ad avviare la canzone al primo hover su un pianeta o sulla stella rossa.
 Se il browser richiede un’interazione per consentire l’audio, la canzone parte al primo click o tocco dentro il sito.
 La riproduzione continua passando tra le pagine.
 Il comando “suono” permette di metterla in pausa e riprenderla.
 
-## Regolare il moto dei puntini
+## Animazione del sistema solare
 
-In `contenuti.js`, la sezione `movimento` controlla il moto browniano semplificato:
+I pianeti orbitano lentamente attorno alla stella rossa. Passando il mouse o usando il tasto Tab si apre la foto con il testo del ricordo e le orbite si fermano. Un click apre la pagina del ricordo. Su smartphone, il primo tocco apre l’anteprima e un tocco sulla foto apre il ricordo; toccando lo sfondo si chiude l’anteprima. Anche il tasto Esc chiude la foto.
 
-```js
-movimento: {
-  diffusione: 40,
-  attrito: 1.2,
-},
-```
+Le stelline decorative fluttuano e si allontanano leggermente dal mouse o dal dito. Gli SVG sono in `assets/solar`, lo stile in `css/style.css` e il movimento in `js/solar-system.js`. Le velocità delle orbite si regolano tramite `speed` in quel file.
 
-`diffusione` aumenta o riduce l’intensità del movimento casuale; `0` elimina il movimento spontaneo.
-`attrito` regola la persistenza della direzione: un valore più basso dà traiettorie più lunghe e morbide; un valore più alto fa cambiare direzione più spesso.
-I valori iniziali mantengono il movimento discreto. La home desktop conserva il suo ulteriore rallentamento.
+La preferenza di sistema per il movimento ridotto ferma tutte le animazioni della home. Le animazioni si sospendono anche quando la scheda non è visibile.
 
-Il modello usa impulsi gaussiani e attrito sulla velocità: `dv = -γ v dt + γ √(2D) dW`, `dx = v dt`, separatamente sui due assi.
-La simulazione procede a intervalli fissi, indipendentemente dalla frequenza dello schermo.
-I puntini restano entro i bordi, reagiscono al cursore e al tocco e si fermano quando esplori un’anteprima.
-La preferenza di sistema per il movimento ridotto continua a fermare l’animazione.
+La sezione `movimento` di `contenuti.js` regola solo le particelle rimaste nella pagina “auguri”: `diffusione` controlla il movimento casuale e `attrito` la persistenza della direzione.
 
 ## Vedere le modifiche
 
