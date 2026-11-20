@@ -185,6 +185,7 @@ a.link-dotted:hover,
 }
 
 .logo {
+  color: #cda4bc;
   font-size: var(--type-logo);
   font-weight: 400;
   letter-spacing: var(--tracking-tight);
@@ -196,6 +197,17 @@ a.link-dotted:hover,
   z-index: 30;
   pointer-events: auto;
   cursor: pointer;
+}
+
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .logo {
+    background-color: #cda4bc;
+    background-image: url("../assets/solar/mauve-fabric.svg");
+    background-size: 120px 120px;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 .sub-title {
@@ -609,8 +621,16 @@ a.link-dotted:hover,
   z-index: 8;
 }
 
-body.page-about .dot--hollow {
-  opacity: 0.5;
+.about-star {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  opacity: .6;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+  will-change: left, top;
 }
 
 .page-about .page-content {
@@ -1796,7 +1816,6 @@ body.page-home {
   overflow: hidden;
 }
 
-.page-home .logo { color: #cf929d; }
 .page-home .top-nav { color: #9b83b3; }
 
 .page-home::before {
@@ -1875,7 +1894,7 @@ body.page-home {
   animation: solar-sun-sway 14s ease-in-out infinite;
 }
 
-.is-exploring .solar-body-art { animation-play-state: paused; }
+.solar-body.is-open .solar-body-art { animation-play-state: paused; }
 .solar-body.is-open { z-index: 6; }
 .solar-body.is-open .solar-body-art { opacity: .25; }
 
@@ -1884,9 +1903,9 @@ body.page-home {
   left: 50%;
   top: 50%;
   width: min(240px, 70vw);
-  padding: 8px;
-  background: #fffcf6;
-  box-shadow: 0 5px 25px #6b4c6521;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
   transform: translate(-50%, -50%);
   display: none;
   pointer-events: none;
@@ -1912,7 +1931,7 @@ body.page-home {
 
 .solar-caption {
   display: block;
-  padding: 8px 3px 3px;
+  padding: 8px 0 0;
   font-size: 14px;
   line-height: 1.25;
   color: #937ea7;

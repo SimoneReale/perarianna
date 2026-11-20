@@ -8,7 +8,6 @@
   const { signal } = controller;
   const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
   const hoverPreference = window.matchMedia("(hover: hover)");
-  const system = canvas.querySelector(".solar-system");
   const bodies = [...canvas.querySelectorAll(".solar-body")];
   const planets = [...canvas.querySelectorAll(".solar-planet")];
   const rings = [[225, 145], [335, 205], [435, 265]];
@@ -70,14 +69,12 @@
   function closePreview() {
     openBody?.classList.remove("is-open");
     openBody = null;
-    system.classList.remove("is-exploring");
   }
 
   function openPreview(body) {
     if (openBody !== body) closePreview();
     openBody = body;
     body.classList.add("is-open");
-    system.classList.add("is-exploring");
     placePreview();
   }
 
@@ -147,7 +144,9 @@
     const dt = previous === null ? 0 : Math.min((now - previous) / 1000, .05);
     previous = now;
     elapsed += dt;
-    if (!openBody) planetStates.forEach((planet) => { planet.angle += planet.speed * dt; });
+    planetStates.forEach((planet) => {
+      if (planet.element !== openBody) planet.angle += planet.speed * dt;
+    });
     positionPlanets();
     stars.forEach((star) => {
       const dx = star.x / 100 * width - pointer.x;

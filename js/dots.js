@@ -4,7 +4,7 @@
     window.__wwDotsCleanup = null;
   }
 
-  const dots = document.querySelectorAll(".dot");
+  const dots = document.querySelectorAll(".dot, .about-star");
   const triggerDots = document.querySelectorAll(".dot--trigger");
   const captions = document.querySelectorAll(".dot-caption");
 
@@ -37,7 +37,7 @@
       vx: gx * initialSpeed,
       vy: gy * initialSpeed,
       paused: false,
-      isHollow: el.classList.contains("dot--hollow"),
+      isHollow: el.matches(".dot--hollow, .about-star"),
     };
   });
 

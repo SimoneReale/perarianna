@@ -112,20 +112,6 @@
     return isInternal(href);
   }
 
-  function isRoutesHref(href) {
-    return Boolean(href && href.includes("routes.html"));
-  }
-
-  function storeRoutesBackdrop() {
-    if (!document.body.classList.contains("page-routes")) {
-      try {
-        sessionStorage.setItem("ww-routes-backdrop", location.href);
-      } catch (_) {
-        // Embedded previews may disable storage; navigation still works.
-      }
-    }
-  }
-
   function cleanupPage() {
     if (typeof window.__wwSolarCleanup === "function") {
       window.__wwSolarCleanup();
@@ -180,9 +166,6 @@
   }
 
   async function initPage(doc, pageUrl) {
-    if (typeof window.__wwInitRoutesBackdrop === "function") {
-      window.__wwInitRoutesBackdrop();
-    }
     if (typeof window.__wwInitPageArrows === "function") {
       window.__wwInitPageArrows();
     }
@@ -312,7 +295,6 @@
 
     event.preventDefault();
     const href = link.getAttribute("href");
-    if (isRoutesHref(href)) storeRoutesBackdrop();
     if (/overview_|Overview_|ricordo\.html/i.test(href || "")) prefetchOverviewFromTarget(link);
     navigateTo(href);
   });

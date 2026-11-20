@@ -81,7 +81,7 @@
       art.className = "solar-body-art";
       art.alt = "";
       art.draggable = false;
-      art.src = siteUrl(isSun ? "assets/solar/stellina.svg?v=20261120-pastel2" : `assets/solar/planet-${colors[planetIndex % colors.length]}.svg`);
+      art.src = siteUrl(isSun ? "assets/solar/stellina.svg?v=20261120-mauve3" : `assets/solar/planet-${colors[planetIndex % colors.length]}.svg`);
       if (!isSun) dot.dataset.planet = String(planetIndex++);
       dot.appendChild(art);
 
@@ -103,37 +103,6 @@
       preview.appendChild(caption);
       dot.appendChild(preview);
       canvas.appendChild(dot);
-    });
-  }
-
-  function renderRoutes() {
-    const list = document.querySelector(".routes-list");
-    if (!list) return;
-    list.replaceChildren();
-    list.style.setProperty("--route-count", memories.length);
-    memories.forEach((memory, index) => {
-      const item = document.createElement("li");
-      item.className = "route";
-      item.style.setProperty("--route-column", index % 5);
-      item.style.setProperty("--route-row", index);
-      const link = document.createElement("a");
-      link.className = "route__link";
-      link.href = memoryUrl(memory);
-      const bullet = document.createElement("span");
-      bullet.className = "route__bullet";
-      bullet.setAttribute("aria-hidden", "true");
-      const copy = document.createElement("span");
-      copy.className = "route__text";
-      const title = document.createElement("span");
-      title.className = "route__title link-dotted";
-      text(title, memory.titolo || `Ricordo ${index + 1}`);
-      const description = document.createElement("span");
-      description.className = "route__school";
-      text(description, memory.descrizione);
-      copy.append(title, description);
-      link.append(bullet, copy);
-      item.appendChild(link);
-      list.appendChild(item);
     });
   }
 
@@ -177,7 +146,6 @@
 
   function render(pageUrl = location.href) {
     renderHome();
-    renderRoutes();
     renderAbout();
     renderMemory(pageUrl);
   }

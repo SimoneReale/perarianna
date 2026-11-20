@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <defs>
+    <pattern id="weave" width="4" height="4" patternUnits="userSpaceOnUse">
+      <path d="M.5 0V4" stroke="#a985a4" stroke-opacity=".1" stroke-width=".65"/>
+      <path d="M0 1.5H4" stroke="#f5e5ef" stroke-opacity=".2" stroke-width=".75"/>
+    </pattern>
+    <filter id="fibres" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".06 .35" numOctaves="3" seed="8" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <path d="M0 0H120V120H0Z" fill="#cda4bc"/>
+  <path d="M0 0H120V120H0Z" fill="url(#weave)"/>
+  <path d="M0 0H120V120H0Z" filter="url(#fibres)" opacity=".1" style="mix-blend-mode:soft-light"/>
+</svg>

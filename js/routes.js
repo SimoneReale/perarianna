@@ -1,40 +1,6 @@
 (function () {
-  const STORAGE_KEY = "ww-routes-backdrop";
-  const rootUrl = new URL("../", document.currentScript.src);
-
-  function isRoutesPage(url) {
-    return new URL(url, rootUrl).pathname.endsWith("/routes.html");
-  }
-
-  document.addEventListener("click", (event) => {
-    const link = event.target.closest('a[href*="routes.html"]');
-    if (!link || isRoutesPage(location.href)) return;
-    try {
-      sessionStorage.setItem(STORAGE_KEY, location.href);
-    } catch (_) {
-      // Some embedded previews disable session storage.
-    }
-  });
-
   window.__wwInitPageArrows = function () {
     window.AriannaContent?.renderArrows();
-  };
-
-  window.__wwInitRoutesBackdrop = function () {
-    const iframe = document.getElementById("routes-backdrop");
-    if (!iframe) return;
-    let stored;
-    try {
-      stored = sessionStorage.getItem(STORAGE_KEY);
-    } catch (_) {}
-    const fallback = new URL("index.html", rootUrl).href;
-    try {
-      const source = new URL(stored || document.referrer || fallback, rootUrl);
-      iframe.src = source.href.startsWith(rootUrl.href) && !isRoutesPage(source.href)
-        ? source.href : fallback;
-    } catch (_) {
-      iframe.src = fallback;
-    }
   };
 
   function syncRouteIntroWidth(intro) {
@@ -62,7 +28,6 @@
     resizeTimer = setTimeout(window.__wwSyncRouteIntroWidths, 100);
   });
 
-  window.__wwInitRoutesBackdrop();
   window.__wwInitPageArrows();
   if (document.fonts?.ready) document.fonts.ready.then(window.__wwSyncRouteIntroWidths);
   else window.__wwSyncRouteIntroWidths();
