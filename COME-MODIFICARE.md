@@ -87,6 +87,18 @@ Il comando “suono” permette di metterla in pausa e riprenderla.
 
 ## Animazione del sistema solare
 
+All’inizio di `js/content.js` trovi i due parametri della home:
+
+```js
+const sistemaSolare = {
+  dimensione: 1,
+  numeroStelline: 14,
+};
+```
+
+`dimensione` è un moltiplicatore: `0.8` riduce il sistema del 20%, `1.2` lo ingrandisce del 20%. Il sistema resta proporzionato e la dimensione viene limitata allo spazio disponibile sullo schermo, anche su mobile.
+`numeroStelline` controlla solo le stelline decorative senza foto: `0` le nasconde, `30` ne mostra trenta (massimo 200). Non modifica il numero dei pianeti, che dipende dai ricordi. Salva e ricarica la pagina dopo una modifica.
+
 I pianeti orbitano lentamente attorno alla stella rossa. Passando il mouse o usando il tasto Tab si apre la foto con il testo del ricordo e le orbite si fermano. Un click apre la pagina del ricordo. Su smartphone, il primo tocco apre l’anteprima e un tocco sulla foto apre il ricordo; toccando lo sfondo si chiude l’anteprima. Anche il tasto Esc chiude la foto.
 
 Le stelline decorative fluttuano e si allontanano leggermente dal mouse o dal dito. Gli SVG sono in `assets/solar`, lo stile in `css/style.css` e il movimento in `js/solar-system.js`. Le velocità delle orbite si regolano tramite `speed` in quel file.

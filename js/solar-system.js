@@ -23,7 +23,16 @@
 
   // Reuse the supplied SVGs as small drifting stars, without photo links.
   const starFiles = ["celeste_scarabocchio", "viola_scintilla", "verde_piccola", "corallo", "gialla", "lilla_scarabocchio", "azzurra_allungata"];
-  const positions = [[12,22,34], [83,18,28], [7,57,25], [88,75,37], [26,85,29], [60,13,31], [94,40,26], [36,17,24], [15,77,23], [74,88,29], [48,89,25], [91,90,22], [6,38,26], [69,20,22]];
+  const seeds = [[12,22,34], [83,18,28], [7,57,25], [88,75,37], [26,85,29], [60,16,31], [94,40,26], [36,17,24], [15,77,23], [74,88,29], [48,89,25], [91,90,22], [6,38,26], [69,20,22]];
+  const requestedCount = window.AriannaContent?.sistemaSolare.numeroStelline;
+  const count = Number.isFinite(requestedCount) ? Math.max(0, Math.min(200, Math.floor(requestedCount))) : 14;
+  const positions = Array.from({ length: count }, (_, i) => {
+    if (i < seeds.length) return seeds[i];
+    // Distribute additional stars around the system, below the navigation.
+    const angle = i * 2.399963;
+    const radius = .85 + (i % 4) * .05;
+    return [50 + Math.cos(angle) * 44 * radius, 53 + Math.sin(angle) * 37 * radius, 22 + (i % 5) * 3];
+  });
   const starLayer = canvas.querySelector(".solar-stars");
   starLayer.replaceChildren();
   const stars = positions.map(([x, y, size], i) => {

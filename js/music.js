@@ -79,7 +79,7 @@
 
   function onFirstHover(event) {
     if (unlocked || event.pointerType === "touch") return;
-    if (!event.target.closest(".dot--solid.dot--trigger")) return;
+    if (!event.target.closest(".solar-body, .dot--solid.dot--trigger")) return;
     document.removeEventListener("pointerover", onFirstHover, true);
     play({ fromHover: true });
   }

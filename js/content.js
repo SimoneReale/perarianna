@@ -1,4 +1,10 @@
 (function () {
+  // HOME: modifica questi due valori e ricarica la pagina.
+  const sistemaSolare = {
+    dimensione: 1,       // Scala: 0.8 = più piccolo, 1 = normale, 1.2 = più grande.
+    numeroStelline: 35,  // Stelline decorative: 0 per nasconderle (massimo 200).
+  };
+
   if (window.AriannaContent) return;
 
   const rootUrl = new URL("../", document.currentScript.src);
@@ -57,6 +63,9 @@
     const canvas = document.querySelector(".page-home .solar-bodies");
     if (!canvas) return;
     canvas.replaceChildren();
+    const scale = Number.isFinite(sistemaSolare.dimensione) && sistemaSolare.dimensione > 0
+      ? sistemaSolare.dimensione : 1;
+    canvas.closest(".solar-system").style.setProperty("--solar-scale", scale);
     const sun = memories.find((memory) => memory.foto === "tutte") || memories[0];
     const colors = ["blue", "yellow", "orange", "purple", "green", "pink"];
     let planetIndex = 0;
@@ -64,7 +73,7 @@
     memories.forEach((memory, index) => {
       const isSun = memory === sun;
       const dot = document.createElement("a");
-      dot.className = `dot dot--solid dot--trigger solar-body ${isSun ? "solar-sun" : "solar-planet"}`;
+      dot.className = `dot--trigger solar-body ${isSun ? "solar-sun" : "solar-planet"}`;
       dot.href = memoryUrl(memory);
       dot.dataset.href = dot.href;
       dot.setAttribute("aria-label", memory.titolo || `Ricordo ${index + 1}`);
@@ -72,7 +81,7 @@
       art.className = "solar-body-art";
       art.alt = "";
       art.draggable = false;
-      art.src = siteUrl(isSun ? "assets/solar/stellina.svg" : `assets/solar/planet-${colors[planetIndex % colors.length]}.svg`);
+      art.src = siteUrl(isSun ? "assets/solar/stellina.svg?v=20261120-pastel2" : `assets/solar/planet-${colors[planetIndex % colors.length]}.svg`);
       if (!isSun) dot.dataset.planet = String(planetIndex++);
       dot.appendChild(art);
 
@@ -173,6 +182,6 @@
     renderMemory(pageUrl);
   }
 
-  window.AriannaContent = { siteUrl, memoryUrl, currentMemory, photosFor, render, renderArrows };
+  window.AriannaContent = { sistemaSolare, siteUrl, memoryUrl, currentMemory, photosFor, render, renderArrows };
   render();
 })();

@@ -32,8 +32,8 @@
   --space-l: 1.5rem;
   --space-xl: 2rem;
   --font: "Arial Narrow", Arial, sans-serif;
-  --text: #000;
-  --bg: #fff;
+  --text: #826d92;
+  --bg: #fff8f0;
 
   /* Type scale */
   --type-logo: 30pt;
@@ -1792,9 +1792,12 @@ body.page-routes {
 /* A little solar system, drawn on warm paper. */
 body.page-home {
   --bg: #fff5e8;
-  --text: #493f47;
+  --text: #9b83b3;
   overflow: hidden;
 }
+
+.page-home .logo { color: #cf929d; }
+.page-home .top-nav { color: #9b83b3; }
 
 .page-home::before {
   content: "";
@@ -1810,10 +1813,11 @@ body.page-home {
 }
 
 .solar-system {
+  --solar-base-size: min(90vw, 117vh, 1200px);
   position: absolute;
   left: 50%;
   top: 52%;
-  width: min(90vw, 117dvh, 1200px);
+  width: min(calc(var(--solar-base-size) * var(--solar-scale, 1)), calc(100vw - 16px), calc((100vh - 140px) * 1.42857));
   aspect-ratio: 10 / 7;
   transform: translate(-50%, -50%);
 }
@@ -1831,12 +1835,14 @@ body.page-home {
 .solar-orbits { user-select: none; }
 
 .page-home .solar-body {
+  position: absolute;
   left: 50%;
   top: 50%;
   height: auto;
   aspect-ratio: 1;
   border-radius: 50%;
   background: none;
+  transform: translate(-50%, -50%);
   will-change: left, top;
   outline-offset: 8px;
   outline-color: #b19acb;
@@ -1849,8 +1855,8 @@ body.page-home {
   border-radius: 50%;
 }
 
-.solar-sun { width: 23%; min-width: 106px; }
-.solar-planet { width: 7.3%; min-width: 38px; }
+.solar-sun { width: 23%; min-width: 76px; }
+.solar-planet { width: 7.3%; min-width: 28px; }
 .solar-planet[data-planet="0"] { width: 6%; }
 .solar-planet[data-planet="1"] { width: 6.8%; }
 .solar-planet[data-planet="2"] { width: 8.6%; }
@@ -1858,7 +1864,7 @@ body.page-home {
 .solar-body-art {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: contain;
   user-select: none;
   pointer-events: none;
@@ -1909,7 +1915,7 @@ body.page-home {
   padding: 8px 3px 3px;
   font-size: 14px;
   line-height: 1.25;
-  color: #493f47;
+  color: #937ea7;
 }
 
 .solar-caption[hidden] { display: none; }
@@ -1948,14 +1954,20 @@ body.page-home {
 }
 
 @media (max-width: 600px) {
-  .solar-system { width: 100vw; top: 49%; }
+  .solar-system { --solar-base-size: 100vw; top: 49%; }
   .solar-spark { max-width: 28px; }
   .solar-hint { bottom: 15dvh; font-size: 15px; }
 }
 
 @media (max-height: 500px) and (min-width: 601px) {
-  .solar-system { width: 105dvh; top: 54%; }
+  .solar-system { --solar-base-size: 105vh; top: 54%; }
   .solar-hint { bottom: 30px; font-size: 14px; }
+}
+
+@supports (height: 100svh) {
+  .solar-system {
+    max-width: calc((100svh - 140px) * 1.42857);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
