@@ -48,6 +48,8 @@
   });
 
   let openBody = null;
+  const previewDurationMs = 5000;
+  let previewTimer = null;
   let frameId = null;
   let previous = null;
   let elapsed = 0;
@@ -61,21 +63,33 @@
     preview.style.marginLeft = "0px";
     preview.style.marginTop = "0px";
     const rect = preview.getBoundingClientRect();
-    const inset = 16;
+    const inset = 28; // Leave room for the photo's gentle floating motion.
     preview.style.marginLeft = `${Math.max(inset - rect.left, Math.min(0, width - inset - rect.right))}px`;
     preview.style.marginTop = `${Math.max(inset - rect.top, Math.min(0, height - inset - rect.bottom))}px`;
   }
 
   function closePreview() {
-    openBody?.classList.remove("is-open");
+    clearTimeout(previewTimer);
+    previewTimer = null;
+    openBody?.classList.remove("is-open", "is-preview-hiding");
     openBody = null;
   }
 
-  function openPreview(body) {
+  function openPreview(body, autoDismiss = false) {
     if (openBody !== body) closePreview();
+    clearTimeout(previewTimer);
+    previewTimer = null;
     openBody = body;
+    body.classList.remove("is-preview-hiding");
     body.classList.add("is-open");
     placePreview();
+    if (autoDismiss) {
+      previewTimer = setTimeout(() => {
+        previewTimer = null;
+        // Keep this planet paused while the pointer remains over it.
+        if (openBody === body) body.classList.add("is-preview-hiding");
+      }, previewDurationMs);
+    }
   }
 
   bodies.forEach((body) => {
@@ -86,7 +100,7 @@
       previewWasOpen = openBody === body;
     }, { signal });
     body.addEventListener("pointerenter", (event) => {
-      if (event.pointerType !== "touch" && hoverPreference.matches) openPreview(body);
+      if (event.pointerType !== "touch" && hoverPreference.matches) openPreview(body, true);
     }, { signal });
     body.addEventListener("pointerleave", (event) => {
       if (event.pointerType !== "touch" && hoverPreference.matches && document.activeElement !== body) closePreview();

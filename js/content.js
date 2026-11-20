@@ -87,6 +87,10 @@
 
       const preview = document.createElement("span");
       preview.className = "solar-preview";
+      const entrance = document.createElement("span");
+      entrance.className = "solar-preview-content";
+      const floating = document.createElement("span");
+      floating.className = "solar-preview-float";
       const photo = photosFor(memory)[0];
       if (photo) {
         const image = document.createElement("img");
@@ -94,13 +98,15 @@
         image.src = siteUrl(photo.file);
         image.alt = photo.alt || "";
         image.draggable = false;
-        preview.appendChild(image);
+        floating.appendChild(image);
       }
 
       const caption = document.createElement("span");
       caption.className = "solar-caption";
       text(caption, [memory.titolo, memory.descrizione].filter(Boolean).join("\n"));
-      preview.appendChild(caption);
+      floating.appendChild(caption);
+      entrance.appendChild(floating);
+      preview.appendChild(entrance);
       dot.appendChild(preview);
       canvas.appendChild(dot);
     });
