@@ -37,7 +37,7 @@
   const stars = positions.map(([x, y, size], i) => {
     const element = document.createElement("img");
     element.className = "solar-spark";
-    element.src = new URL(`stella_${starFiles[i % starFiles.length]}.svg`, root).href;
+    element.src = new URL(`stella_${starFiles[i % starFiles.length]}.svg?v=20261120-brownian6`, root).href;
     element.alt = "";
     element.draggable = false;
     element.style.left = `${x}%`;

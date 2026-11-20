@@ -21,6 +21,18 @@ window.ARIANNA = {
 
   auguri: {
     titolo: "auguri",
+    // Movimento dei soli testi nella lista "paragrafi" qui sotto.
+    movimentoParagrafi: {
+      attivo: true,           // false = testo fermo.
+      ampiezzaX: 20,          // Spostamento massimo orizzontale, in pixel.
+      ampiezzaY: 20,          // Spostamento massimo verticale, in pixel.
+      intensita: 3,          // Forza del moto casuale; 0 = solo mouse/tocco.
+      velocita: 0.5,            // Moltiplicatore: 0.5 = lento, 2 = veloce, 0 = fermo.
+      reattivitaMouse: 0.5,     // Moltiplicatore della spinta del cursore; 0 la disattiva.
+      reattivitaTocco: 0.5,     // Moltiplicatore della spinta del dito; 0 la disattiva.
+      raggio: 180,            // Distanza a cui mouse e tocco agiscono, in pixel.
+      ritorno: 0.5,           // Richiamo verso la posizione iniziale; 0 lo elimina.
+    },
     // introduzione: "[Scrivi qui una breve introduzione]",
     // titoloElenco: "[Titolo dell’elenco]",
     // elenco: [
@@ -29,9 +41,10 @@ window.ARIANNA = {
     //   "[Terza voce]",
     // ],
     paragrafi: [
-      "Ciao Arianna, sei un topo.",
-      "Un topo certamente speciale ma pur sempre un topo.",
-      "Un topone qualcuno potrebbe dire."
+      "Ciao Arianna, sei un topo.\n Un topo certamente speciale,",
+      "ma pur sempre un topo.",
+      "Un topone qualcuno potrebbe dire.",
+      "I tuoi amici non sono topi, perlomeno non tutti.\n Ad ogni modo ti vogliono un gran bene."
     ],
   },
 

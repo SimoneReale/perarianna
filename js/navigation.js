@@ -113,6 +113,10 @@
   }
 
   function cleanupPage() {
+    if (typeof window.__wwAboutTextCleanup === "function") {
+      window.__wwAboutTextCleanup();
+      window.__wwAboutTextCleanup = null;
+    }
     if (typeof window.__wwSolarCleanup === "function") {
       window.__wwSolarCleanup();
       window.__wwSolarCleanup = null;
@@ -150,6 +154,7 @@
     }
     if (body.classList.contains("page-about")) {
       scripts.push(`${prefix}dots.js`);
+      scripts.push(`${prefix}about-text.js`);
     }
     if (body.classList.contains("page-overview")) {
       scripts.push(`${prefix}overview-images.js`);

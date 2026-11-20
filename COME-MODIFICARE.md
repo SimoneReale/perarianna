@@ -113,3 +113,21 @@ La sezione `movimento` di `contenuti.js` regola solo le stelline nella pagina �
 Salva `contenuti.js` e ricarica la pagina. Puoi usare Live Server, l’anteprima dell’IDE o aprire `index.html` nel browser.
 Con Live Server o un sito pubblicato la musica continua anche durante la navigazione interna.
 Aprendo direttamente i file dal disco, il browser può ricaricare la pagina quando segui un link, interrompendo la canzone.
+
+## Movimento del testo degli auguri
+
+Si muovono solo i testi inseriti in `auguri.paragrafi`. I parametri si trovano in `contenuti.js`, dentro `auguri.movimentoParagrafi`:
+
+| Parametro | Effetto |
+| --- | --- |
+| `attivo` | `false` ferma il movimento. |
+| `ampiezzaX`, `ampiezzaY` | Massimo spostamento orizzontale e verticale, in pixel (0–200). Su mobile si riducono al 65% e 75%. |
+| `intensita` | Forza del moto casuale (0–150). Con `0` resta solo la reazione al cursore/tocco. |
+| `velocita` | Moltiplicatore del tempo: `0.5` rallenta, `2` accelera, `0` ferma tutto (0–4). |
+| `reattivitaMouse`, `reattivitaTocco` | Moltiplicatori della spinta: `0` disattiva la risposta, `2` la raddoppia (0–5). |
+| `raggio` | Distanza di azione del cursore o dito, in pixel (0–600). |
+| `ritorno` | Intensità del richiamo verso la posizione iniziale (0–12); un valore maggiore fa rientrare prima il testo, `0` elimina il richiamo. |
+
+Salva `contenuti.js` e ricarica la pagina. Lo spazio tra i paragrafi si adatta all’ampiezza; i limiti effettivi tengono conto dello spazio sullo schermo per evitare sovrapposizioni e tagli. La selezione del testo mette in pausa il movimento e la preferenza di sistema per il movimento ridotto lo disabilita. Il comportamento si trova in `js/about-text.js`.
+
+`stellina.svg` è il logo del progetto: compare nella schermata iniziale, nell’icona della scheda del browser e al centro del sistema solare. Le stelline decorative continuano a usare gli SVG `stella_*.svg`, con colori desaturati e una grana pastello.

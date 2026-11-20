@@ -2135,3 +2135,23 @@ body.page-home {
 @media (prefers-reduced-motion: reduce) {
   .entrance { transition: none; }
 }
+
+/* Only the wish paragraphs move; spacing follows their configured amplitude. */
+.page--about .transcript {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--wish-amplitude-y, 16px) * 2 + 16px);
+  padding: calc(var(--wish-amplitude-y, 16px) + 8px) clamp(16px, calc(var(--wish-amplitude-x, 28px) + 4px), 20%) calc(var(--wish-amplitude-y, 16px) + 12px);
+}
+
+.page--about .transcript > .wish-text {
+  translate: var(--wish-x, 0px) var(--wish-y, 0px);
+  will-change: translate;
+  overflow-wrap: break-word;
+}
+
+.about-star { opacity: .8; }
+
+@media (prefers-reduced-motion: reduce) {
+  .page--about .transcript > .wish-text { translate: none; will-change: auto; }
+}
