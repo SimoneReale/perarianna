@@ -5,6 +5,10 @@
   window.__ariannaMusic = true;
 
   const rootUrl = new URL("../", document.currentScript.src);
+  const entranceKey = `arianna-entered:${rootUrl.href}`;
+  try {
+    window.__ariannaEntered ||= sessionStorage.getItem(entranceKey) === "true";
+  } catch (_) { /* The in-memory flag still covers internal navigation. */ }
   const settings = window.ARIANNA?.musica || {};
   const audio = document.createElement("audio");
   audio.id = "birthday-music";
@@ -25,9 +29,35 @@
   document.body.appendChild(toggle);
 
   const gestureEvents = ["pointerup", "touchend", "click"];
+  const storageKey = "arianna-music";
+  let savedState = null;
+  try {
+    const stored = JSON.parse(sessionStorage.getItem(storageKey));
+    if (stored?.src === audio.src) savedState = stored;
+  } catch (_) { /* Playback also works when session storage is unavailable. */ }
   let unlocked = false;
   let pending = null;
-  let wantsPlayback = false;
+  let wantsPlayback = savedState?.enabled === true;
+  let userPaused = savedState?.enabled === false;
+
+  function savePlayback() {
+    if (!wantsPlayback && !userPaused) return;
+    try {
+      sessionStorage.setItem(storageKey, JSON.stringify({
+        src: audio.src,
+        enabled: wantsPlayback,
+        time: audio.readyState ? audio.currentTime : (savedState?.time || 0),
+      }));
+    } catch (_) { /* Storage must never interrupt the song. */ }
+  }
+
+  audio.addEventListener("loadedmetadata", () => {
+    const time = savedState?.time;
+    if (Number.isFinite(time) && time > 0 && time < audio.duration) audio.currentTime = time;
+  }, { once: true });
+  // Keep a recent position even if navigation falls back to a full page load.
+  audio.addEventListener("timeupdate", savePlayback);
+  window.addEventListener("pagehide", savePlayback);
 
   function syncToggle() {
     const playing = !audio.paused && !audio.error;
@@ -44,8 +74,10 @@
     console.warn("Audio per Arianna:", error?.message || audio.error?.message || "Riproduzione non disponibile");
   }
 
-  function play({ fromHover = false } = {}) {
+  function play({ fromHover = false, quiet = false } = {}) {
+    userPaused = false;
     wantsPlayback = true;
+    savePlayback();
     // A real click can retry immediately, even if a hover attempt is pending.
     if ((pending && (!pending.fromHover || fromHover)) || !audio.paused) return;
     if (audio.error) audio.load();
@@ -57,12 +89,9 @@
     pending = attempt;
     attempt.promise.catch((error) => {
       if (pending !== attempt) return;
-      if (fromHover && error.name === "NotAllowedError") {
-        // Hover does not grant user activation in browsers that block autoplay.
-        // Keep the first-click handlers available without displaying an error.
-        wantsPlayback = false;
-        toggle.textContent = "suono";
-        toggle.setAttribute("aria-label", "Ascolta la canzone per Arianna");
+      if ((fromHover || quiet) && error.name === "NotAllowedError") {
+        // Retry on the next real gesture when autoplay is blocked.
+        syncToggle();
         return;
       }
       if (wantsPlayback) showError(error);
@@ -73,33 +102,50 @@
 
   function onGesture(event) {
     if (document.body.classList.contains("intro-pending")) return;
-    if (unlocked || event.target.closest("#music-toggle")) return;
+    if (userPaused || !audio.paused || event.target.closest("#music-toggle")) return;
     if (event.type === "pointerup" && event.button !== 0) return;
     play();
   }
 
   function onFirstHover(event) {
     if (document.body.classList.contains("intro-pending")) return;
-    if (unlocked || event.pointerType === "touch") return;
+    if (userPaused || unlocked || event.pointerType === "touch") return;
     if (!event.target.closest(".solar-body, .dot--solid.dot--trigger")) return;
     document.removeEventListener("pointerover", onFirstHover, true);
     play({ fromHover: true });
   }
 
   toggle.addEventListener("click", () => {
-    if (!audio.paused && wantsPlayback) {
+    if (wantsPlayback && (!audio.paused || pending)) {
+      userPaused = true;
       wantsPlayback = false;
+      pending = null;
       audio.pause();
+      savePlayback();
+      syncToggle();
     } else play();
   });
 
   audio.addEventListener("playing", () => {
+    if (!wantsPlayback) {
+      audio.pause();
+      return;
+    }
     unlocked = true;
-    gestureEvents.forEach((type) => document.removeEventListener(type, onGesture, true));
     document.removeEventListener("pointerover", onFirstHover, true);
     syncToggle();
   });
-  audio.addEventListener("pause", syncToggle);
+  function resumePlayback() {
+    if (wantsPlayback && audio.paused && !document.hidden &&
+        !document.body.classList.contains("intro-pending")) play({ quiet: true });
+  }
+  audio.addEventListener("pause", () => {
+    syncToggle();
+    // Only the sound button changes the user's choice to pause.
+    queueMicrotask(resumePlayback);
+  });
+  document.addEventListener("visibilitychange", resumePlayback);
+  window.addEventListener("pageshow", resumePlayback);
   audio.addEventListener("error", () => {
     if (wantsPlayback) showError(audio.error);
   });
@@ -131,15 +177,21 @@
       event.preventDefault();
       event.stopPropagation();
       if (entrance.classList.contains("is-leaving")) return;
+      const keyboardEntry = event.type === "keydown" || event.detail === 0;
       window.__ariannaEntered = true;
-      play();
+      try {
+        sessionStorage.setItem(entranceKey, "true");
+      } catch (_) { /* Keep entering the site if storage is unavailable. */ }
+      if (!userPaused) play();
       revealHome();
       entrance.classList.add("is-leaving");
       document.dispatchEvent(new Event("arianna:entered"));
       const delay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 650;
       setTimeout(() => {
         entrance.remove();
-        document.querySelector(".page--home .logo")?.focus({ preventScroll: true });
+        if (keyboardEntry) {
+          document.querySelector(".page--home .logo")?.focus({ preventScroll: true });
+        }
       }, delay);
     }
 
@@ -156,4 +208,6 @@
     entrance.focus({ preventScroll: true });
   };
   window.__ariannaInitEntrance();
+  if (userPaused) syncToggle();
+  resumePlayback();
 })();

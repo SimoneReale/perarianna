@@ -5,8 +5,8 @@
 // La guida completa è in COME-MODIFICARE.md.
 
 window.ARIANNA = {
-  nome: "dai tuoi amichetti",
-  firma: "i tuoi amichetti",
+  nome: "",
+  firma: "",
 
   musica: {
     file: "mp3/carro_armato.mp3",
@@ -51,66 +51,178 @@ window.ARIANNA = {
   ricordi: [
     {
       id: "ricordo-1", // Un nome unico: usato nel link di questo ricordo.
-      titolo: "[Titolo del ricordo 1]",
-      descrizione: "[Scrivi qui la descrizione del primo ricordo]",
-      augurio: "[Scrivi qui un pensiero o un augurio]",
+      titolo: "Alice",
+      descrizione: "buon compleanno, thank you for being the sbork to my sbirk⭐️",
+      augurio: "",
       posizione: [22.4, 55.2], // Posizione della versione precedente; non usata dalle orbite.
       foto: [
         {
-          file: "foto/photo_6051028249535516617_w.jpg",
-          didascalia: "[Didascalia della foto]",
-          alt: "[Breve descrizione della foto per chi non può vederla]",
+          file: "foto/alice.jpeg",
+          didascalia: "als",
+          alt: "",
         },
         // Aggiungi altre foto qui, copiando il blocco qui sopra.
       ],
     },
     {
       id: "ricordo-2",
-      titolo: "[Titolo del ricordo 2]",
-      descrizione: "[Scrivi qui la descrizione del secondo ricordo]",
-      augurio: "[Scrivi qui un pensiero o un augurio]",
+      titolo: "alessandra",
+      descrizione: "la mia casetta x sempre tvb <3",
+      augurio: "",
       posizione: [40.5, 38.7],
       foto: [
         {
-          file: "foto/photo_6051028249535516618_w.jpg",
-          didascalia: "[Didascalia della foto]",
-          alt: "[Breve descrizione della foto per chi non può vederla]",
+          file: "foto/alessandra.jpeg",
+          didascalia: "ale",
+          alt: "",
         },
       ],
     },
     {
       id: "ricordo-3",
-      titolo: "[Titolo del ricordo 3]",
-      descrizione: "[Scrivi qui la descrizione del terzo ricordo]",
-      augurio: "[Scrivi qui un pensiero o un augurio]",
+      titolo: "valeria",
+      descrizione: "Stai proprio diventando vecchia, ma non ti preoccupare la spingo io la carrozzella Angela💙",
+      augurio: "",
       posizione: [52.6, 60.7],
       foto: [
         {
-          file: "foto/photo_6051028249535516619_y.jpg",
-          didascalia: "[Didascalia della foto]",
-          alt: "[Breve descrizione della foto per chi non può vederla]",
+          file: "foto/valeria.jpeg",
+          didascalia: "vale",
+          alt: "",
         },
       ],
     },
     {
       id: "ricordo-4",
-      titolo: "[Titolo del ricordo 4]",
-      descrizione: "[Scrivi qui la descrizione del quarto ricordo]",
-      augurio: "[Scrivi qui un pensiero o un augurio]",
+      titolo: "costantino",
+      descrizione: "Fake identities, real friendship, endless plot twists",
+      augurio: "",
       posizione: [57.1, 42.6],
       foto: [
         {
-          file: "foto/photo_6051028249535516620_w.jpg",
-          didascalia: "[Didascalia della foto]",
-          alt: "[Breve descrizione della foto per chi non può vederla]",
+          file: "foto/costantino.jpeg",
+          didascalia: "costa",
+          alt: "",
+        },
+      ],
+    },
+    {
+      id: "ricordo-5",
+      titolo: "elena",
+      descrizione: "x sempre noi, AUGURI PIPI ⭐️",
+      augurio: "",
+      posizione: [57.1, 42.6],
+      foto: [
+        {
+          file: "foto/elena.jpeg",
+          didascalia: "ele",
+          alt: "",
+        },
+      ],
+    },
+    {
+      id: "ricordo-6",
+      titolo: "francesca e antonio",
+      descrizione: "buon compleanno da mamma&papà per la nostra primogenita ANGELA",
+      augurio: "",
+      posizione: [57.1, 42.6],
+      foto: [
+        {
+          file: "foto/francesca.jpeg",
+          didascalia: "fra & tony",
+          alt: "",
+        },
+      ],
+    },
+    {
+      id: "ricordo-7",
+      titolo: "giulia",
+      descrizione: "Con amore e allegria, tanti auguri arianna mia",
+      augurio: "",
+      posizione: [57.1, 42.6],
+      foto: [
+        {
+          file: "foto/giulia.jpeg",
+          didascalia: "spina",
+          alt: "",
+        },
+      ],
+    },
+    {
+      id: "ricordo-8",
+      titolo: "martina",
+      descrizione: "Che tutta l’energia che emani possa restare sempre la stessa, tanti auguri bimbina",
+      augurio: "",
+      posizione: [57.1, 42.6],
+      foto: [
+        {
+          file: "foto/martina.jpeg",
+          didascalia: "marti",
+          alt: "",
+        },
+      ],
+    },
+    {
+      id: "ricordo-9",
+      titolo: "michele",
+      descrizione: "“La Chioccetta per l'aia azzurra va col suo pigolio di stelle.” Ti amo x sempre ❤️⭐️",
+      augurio: "",
+      posizione: [57.1, 42.6],
+      foto: [
+        {
+          file: "foto/michele.jpeg",
+          didascalia: "michi",
+          alt: "",
+        },
+      ],
+    },
+    {
+      id: "ricordo-10",
+      titolo: "raffaella",
+      descrizione: "A milano nel giorno del tuo compleanno ieri, oggi e xsempre❤️",
+      augurio: "",
+      posizione: [57.1, 42.6],
+      foto: [
+        {
+          file: "foto/raffaella.jpeg",
+          didascalia: "raffi",
+          alt: "",
+        },
+      ],
+    },
+    {
+      id: "ricordo-11",
+      titolo: "sonia",
+      descrizione: "Non meriti i miei auguri però auguri lo stesso, tvb❤️",
+      augurio: "",
+      posizione: [57.1, 42.6],
+      foto: [
+        {
+          file: "foto/sonia.jpeg",
+          didascalia: "sonia",
+          alt: "",
+        },
+      ],
+    },
+    {
+      id: "ricordo-12",
+      titolo: "simone",
+      descrizione: "smac auguri smac",
+      augurio: "",
+      posizione: [57.1, 42.6],
+      foto: [
+        {
+          file: "foto/simone.jpg",
+          didascalia: "topo",
+          alt: "",
         },
       ],
     },
     {
       id: "tutti-i-ricordi",
-      titolo: "[Titolo della raccolta]",
-      descrizione: "[Scrivi qui una descrizione della raccolta]",
-      augurio: "[Scrivi qui un pensiero o un augurio]",
+      titolo: "Tutti assieme",
+      descrizione: "ma proprio tutti",
+      augurio: "",
       posizione: [76.1, 35.1],
       foto: "tutte", // Raccoglie automaticamente anche le foto che aggiungerai.
     },

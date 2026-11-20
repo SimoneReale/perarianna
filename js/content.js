@@ -143,10 +143,6 @@
     document.title = `per arianna — ${memory.titolo || "ricordo"}`;
     text(document.querySelector(".route-title"), memory.titolo);
     text(document.querySelector(".route-intro"), memory.descrizione);
-    text(document.querySelector("[data-memory-name]"), config.nome);
-    text(document.querySelector("[data-memory-signature]"), config.firma);
-    text(document.querySelector(".col-left-body > .conversations-desc"), memory.augurio);
-    document.querySelectorAll(".conversations-item .conversations-desc").forEach((node) => node.remove());
     renderArrows(pageUrl);
   }
 

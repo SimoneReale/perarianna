@@ -185,6 +185,7 @@ a.link-dotted:hover,
 }
 
 .logo {
+  align-self: flex-start;
   color: #cda4bc;
   font-size: var(--type-logo);
   font-weight: 400;
@@ -197,6 +198,13 @@ a.link-dotted:hover,
   z-index: 30;
   pointer-events: auto;
   cursor: pointer;
+}
+
+.logo:focus:not(:focus-visible) { outline: none; }
+
+.logo:focus-visible {
+  outline: 2px dotted #cda4bc;
+  outline-offset: 6px;
 }
 
 @supports ((background-clip: text) or (-webkit-background-clip: text)) {
