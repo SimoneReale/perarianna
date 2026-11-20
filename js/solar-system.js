@@ -180,11 +180,14 @@
   function syncMotion() {
     cancelAnimationFrame(frameId);
     previous = null;
-    if (!motionPreference.matches && !document.hidden) frameId = requestAnimationFrame(tick);
+    if (!motionPreference.matches && !document.hidden && !document.body.classList.contains("intro-pending")) {
+      frameId = requestAnimationFrame(tick);
+    }
     else stars.forEach((star) => { star.element.style.transform = `translate(-50%, -50%) rotate(${star.rotation}deg)`; });
   }
   motionPreference.addEventListener("change", syncMotion, { signal });
   document.addEventListener("visibilitychange", syncMotion, { signal });
+  document.addEventListener("arianna:entered", syncMotion, { signal });
   positionPlanets();
   syncMotion();
   window.__wwSolarCleanup = () => {

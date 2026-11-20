@@ -80,7 +80,8 @@ La home dispone automaticamente i pianeti sulle tre orbite. Il ricordo con `foto
 
 Metti il file nella cartella `mp3` e aggiorna `musica.file`.
 `musica.volume` va da `0` (silenzio) a `1` (volume massimo).
-Il sito prova ad avviare la canzone al primo hover su un pianeta o sulla stella rossa.
+All’apertura della home appare la poesia in italiano e russo. Un click o un tocco in qualsiasi punto della schermata apre il sito e avvia la canzone. Puoi entrare anche con Invio o con il pulsante “entra”. La poesia non ricompare tornando alla home durante la navigazione; ricaricando la pagina viene mostrata di nuovo.
+Il testo della poesia si modifica direttamente in `index.html`.
 Se il browser richiede un’interazione per consentire l’audio, la canzone parte al primo click o tocco dentro il sito.
 La riproduzione continua passando tra le pagine.
 Il comando “suono” permette di metterla in pausa e riprenderla.

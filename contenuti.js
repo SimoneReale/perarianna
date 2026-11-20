@@ -5,8 +5,8 @@
 // La guida completa è in COME-MODIFICARE.md.
 
 window.ARIANNA = {
-  nome: "Arianna",
-  firma: "[La tua firma]",
+  nome: "dai tuoi amichetti",
+  firma: "i tuoi amichetti",
 
   musica: {
     file: "mp3/carro_armato.mp3",
@@ -20,18 +20,18 @@ window.ARIANNA = {
   },
 
   auguri: {
-    titolo: "[Titolo degli auguri]",
-    introduzione: "[Scrivi qui una breve introduzione]",
-    titoloElenco: "[Titolo dell’elenco]",
-    elenco: [
-      "[Prima voce]",
-      "[Seconda voce]",
-      "[Terza voce]",
-    ],
+    titolo: "auguri",
+    // introduzione: "[Scrivi qui una breve introduzione]",
+    // titoloElenco: "[Titolo dell’elenco]",
+    // elenco: [
+    //   "[Prima voce]",
+    //   "[Seconda voce]",
+    //   "[Terza voce]",
+    // ],
     paragrafi: [
-      "[Scrivi qui il primo paragrafo degli auguri]",
-      "[Scrivi qui il secondo paragrafo]",
-      "[Scrivi qui il terzo paragrafo]",
+      "Ciao Arianna, sei un topo.",
+      "Un topo certamente speciale ma pur sempre un topo.",
+      "Un topone qualcuno potrebbe dire."
     ],
   },
 

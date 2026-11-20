@@ -219,6 +219,8 @@
       document.body.appendChild(document.importNode(node, true));
     });
 
+    window.__ariannaInitEntrance?.();
+
     if (push) {
       history.pushState({ wwUrl: pageUrl }, "", pageUrl);
     }
